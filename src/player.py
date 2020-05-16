@@ -1,9 +1,6 @@
-import json
-
 import requests
 from bs4 import BeautifulSoup
 
-from src.exception import CallOfDutyApiException, CoDTrackerApiException
 import src.selectors as selector
 
 
@@ -27,3 +24,5 @@ class Player:
 				self.spm_weekly = float(page.select_one(selector.BATTLE_ROYALE_WEEKLY_SPM).text)
 			except AttributeError as e:
 				print("ERROR: ", platform, username, e)
+		else:
+			print("ERROR: ", platform, username, "'s profile could not be found or is private.")
