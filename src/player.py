@@ -23,6 +23,6 @@ class Player:
 				self.kdr_weekly = float(page.select_one(selector.BATTLE_ROYALE_WEEKLY_KDR).text)
 				self.spm_weekly = float(page.select_one(selector.BATTLE_ROYALE_WEEKLY_SPM).text)
 			except AttributeError as e:
-				print("ERROR: ", platform, username, e)
+				print("ERROR: %s %s - " % (platform, username), e)
 		else:
-			print("ERROR: ", platform, username, "'s profile could not be found or is private.")
+			print("ERROR: %s %s's profile could not be found or is private." % (platform, username))
