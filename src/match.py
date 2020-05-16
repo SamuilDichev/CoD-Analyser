@@ -41,11 +41,17 @@ def output_results(match: Match):
 
 		kdr_list = []
 		spm_list = []
+		pc_players = 0
+		console_players = 0
 		for player in match.players:
 			if player.kdr_lifetime:
 				kdr_list.append(player.kdr_lifetime)
 			if player.spm_lifetime:
 				spm_list.append(player.spm_lifetime)
+			if player.platform == "battlenet":
+				pc_players += 1
+			elif player.platform == "xbl" or player.platform == "psn":
+				console_players += 1
 			writer.writerow({
 				"username": player.username,
 				"platform": player.platform,
@@ -54,7 +60,7 @@ def output_results(match: Match):
 			})
 		writer.writerow({
 			"username": "AVERAGE for %d / %d players" % (len(kdr_list), len(match.players)),
-			"platform": "ALL",
+			"platform": "PC: %d, Console: %d" % (pc_players, console_players),
 			"K/D": sum(kdr_list) / len(kdr_list),
 			"Score Per Minute": sum(spm_list) / len(spm_list)
 		})
