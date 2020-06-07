@@ -1,6 +1,7 @@
 import concurrent
 import csv
 import json
+import time
 from concurrent import futures
 
 import requests
@@ -75,13 +76,21 @@ def generate_distribution_graphs(match: Match, kdr_list, spm_list):
 	# 1920x540 (Half height of 1080p)
 	fig.set_size_inches(19.2, 5.4)
 
-	axs[0].set_title('K/D distribution for match ' + match.match_id)
+	# KDR Graph
+	axs[0].set_title('K/D (Avg: {avg}) for match {match_id}'.format(
+		avg=round(sum(kdr_list) / len(kdr_list), 2),
+		match_id=match.match_id
+	))
 	axs[0].set(xlabel='K/D', ylabel='# of players')
 	axs[0].set_xlim(0, 5.1)
 	axs[0].set_xticks([tick/10 for tick in range(5, 51, 5)])
 	axs[0].hist(kdr_list, np.arange(0, 5, 0.1), alpha=0.5, histtype='bar', ec='black')
 
-	axs[1].set_title('Score/min distribution for match ' + match.match_id)
+	# SPM Graph
+	axs[1].set_title('Score/min (Avg: {avg}) for match {match_id}'.format(
+		avg=round(sum(spm_list) / len(spm_list)),
+		match_id=match.match_id
+	))
 	axs[1].set(xlabel='Score/min', ylabel='# of players')
 	axs[1].set_xlim(0, 510)
 	axs[1].set_xticks([tick*10 for tick in range(5, 51, 5)])
@@ -90,9 +99,13 @@ def generate_distribution_graphs(match: Match, kdr_list, spm_list):
 	plt.savefig(match.timestamp + "_" + match.match_id + ".png")
 
 def main():
-	match_id = input("Enter a match ID (from cod.tracker.gg): ")
-	match = Match(match_id)
-	output_results(match)
+	match_ids = input("Enter match ID(s) separated by a comma (from cod.tracker.gg): ")
+	start = time.time()
+	for match_id in match_ids.split(","):
+		print("------ Analysing match " + match_id + " ------")
+		match = Match(match_id.strip())
+		output_results(match)
+	print(time.time() - start)
 
 
 if __name__ == "__main__":
