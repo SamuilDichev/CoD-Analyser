@@ -1,7 +1,6 @@
 import concurrent
 import csv
 import json
-import time
 from concurrent import futures
 
 import requests
@@ -100,12 +99,10 @@ def generate_distribution_graphs(match: Match, kdr_list, spm_list):
 
 def main():
 	match_ids = input("Enter match ID(s) separated by a comma (from cod.tracker.gg): ")
-	start = time.time()
 	for match_id in match_ids.split(","):
 		print("------ Analysing match " + match_id + " ------")
 		match = Match(match_id.strip())
 		output_results(match)
-	print(time.time() - start)
 
 
 if __name__ == "__main__":
