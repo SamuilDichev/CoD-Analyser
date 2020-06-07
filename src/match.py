@@ -76,26 +76,22 @@ def generate_distribution_graphs(match: Match, kdr_list, spm_list):
 	fig.set_size_inches(19.2, 5.4)
 
 	# KDR Graph
-	axs[0].set_title('K/D (Avg: {avg}) for match {match_id}'.format(
-		avg=round(sum(kdr_list) / len(kdr_list), 2),
-		match_id=match.match_id
-	))
+	avg_kdr = round(sum(kdr_list) / len(kdr_list), 2)
+	axs[0].set_title('K/D (Avg: {avg}) for match {match_id}'.format(avg=avg_kdr, match_id=match.match_id))
 	axs[0].set(xlabel='K/D', ylabel='# of players')
 	axs[0].set_xlim(0, 5.1)
 	axs[0].set_xticks([tick/10 for tick in range(5, 51, 5)])
 	axs[0].hist(kdr_list, np.arange(0, 5, 0.1), alpha=0.5, histtype='bar', ec='black')
 
 	# SPM Graph
-	axs[1].set_title('Score/min (Avg: {avg}) for match {match_id}'.format(
-		avg=round(sum(spm_list) / len(spm_list)),
-		match_id=match.match_id
-	))
+	avg_spm = round(sum(spm_list) / len(spm_list))
+	axs[1].set_title('Score/min (Avg: {avg}) for match {match_id}'.format(avg=avg_spm, match_id=match.match_id))
 	axs[1].set(xlabel='Score/min', ylabel='# of players')
 	axs[1].set_xlim(0, 510)
 	axs[1].set_xticks([tick*10 for tick in range(5, 51, 5)])
 	axs[1].hist(spm_list, np.arange(0, 500, 10), alpha=0.5, histtype='bar', ec='black')
 
-	plt.savefig(match.timestamp + "_" + match.match_id + ".png")
+	plt.savefig(match.timestamp + "_" + match.match_id + "_" + str(avg_kdr) + "_" + str(avg_spm) + ".png")
 
 def main():
 	match_ids = input("Enter match ID(s) separated by a comma (from cod.tracker.gg): ")
