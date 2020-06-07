@@ -66,7 +66,7 @@ def output_results(match: Match):
 			"Score Per Minute": sum(spm_list) / len(spm_list)
 		})
 
-		generate_distribution_graphs(match, kdr_list, spm_list)
+	generate_distribution_graphs(match, kdr_list, spm_list)
 
 
 def generate_distribution_graphs(match: Match, kdr_list, spm_list):
